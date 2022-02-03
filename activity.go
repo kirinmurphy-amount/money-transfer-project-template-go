@@ -5,26 +5,25 @@ import (
 	"fmt"
 )
 
-func Withdraw(ctx context.Context, transferDetails TransferDetails) error {
+func Withdraw(ctx context.Context, signUpDetails SignUpDetails) error {
 	fmt.Printf(
-		"\nWithdrawing $%f from account %s. ReferenceId: %s\n",
-		transferDetails.Amount,
-		transferDetails.FromAccount,
-		transferDetails.ReferenceID,
+		"\nUpdating email address: %s. ReferenceId: %s\n",
+		signUpDetails.Email,
+		signUpDetails.ReferenceID,
 	)
 	return nil
 }
 
+
 // @@@SNIPSTART money-transfer-project-template-go-activity
-func Deposit(ctx context.Context, transferDetails TransferDetails) error {
+func Deposit(ctx context.Context, signUpDetails SignUpDetails) error {
 	fmt.Printf(
-		"\nDepositing $%f into account %s. ReferenceId: %s\n",
-		transferDetails.Amount,
-		transferDetails.ToAccount,
-		transferDetails.ReferenceID,
+		"\nUpdating email address: %s. ReferenceId: %s\n",
+		signUpDetails.Email,
+		signUpDetails.ReferenceID,
 	)
 	// Switch out comments on the return statements to simulate an error
-	//return fmt.Errorf("deposit did not occur due to an issue")
+	// return fmt.Errorf("deposit did not occur due to an issue")
 	return nil
 }
 // @@@SNIPEND"

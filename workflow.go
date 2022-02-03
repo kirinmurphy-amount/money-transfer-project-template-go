@@ -8,7 +8,7 @@ import (
 )
 
 // @@@SNIPSTART money-transfer-project-template-go-workflow
-func TransferMoney(ctx workflow.Context, transferDetails TransferDetails) error {
+func TransferMoney(ctx workflow.Context, signUpDetails SignUpDetails) error {
 	// RetryPolicy specifies how to automatically handle retries if an Activity fails.
 	retrypolicy := &temporal.RetryPolicy{
 		InitialInterval:    time.Second,
@@ -24,11 +24,11 @@ func TransferMoney(ctx workflow.Context, transferDetails TransferDetails) error 
 		RetryPolicy: retrypolicy,
 	}
 	ctx = workflow.WithActivityOptions(ctx, options)
-	err := workflow.ExecuteActivity(ctx, Withdraw, transferDetails).Get(ctx, nil)
+	err := workflow.ExecuteActivity(ctx, Withdraw, signUpDetails).Get(ctx, nil)
 	if err != nil {
 		return err
 	}
-	err = workflow.ExecuteActivity(ctx, Deposit, transferDetails).Get(ctx, nil)
+	err = workflow.ExecuteActivity(ctx, Deposit, signUpDetails).Get(ctx, nil)
 	if err != nil {
 		return err
 	}
