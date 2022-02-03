@@ -18,10 +18,9 @@ func main() {
 	}
 	defer c.Close()
 	// This worker hosts both Workflow and Activity functions
-	w := worker.New(c, app.TransferMoneyTaskQueue, worker.Options{})
+	w := worker.New(c, app.SignUpTaskQueue, worker.Options{})
 	w.RegisterWorkflow(app.TransferMoney)
 	w.RegisterActivity(app.Withdraw)
-	w.RegisterActivity(app.Deposit)
 	// Start listening to the Task Queue
 	err = w.Run(worker.InterruptCh())
 	if err != nil {
