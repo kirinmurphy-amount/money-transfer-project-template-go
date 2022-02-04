@@ -14,39 +14,30 @@ import (
 func main() {
 	// Create the client object just once per process
 	c, err := client.NewClient(client.Options{})
+
 	if err != nil {
 		log.Fatalln("unable to create Temporal client", err)
 	}
+
 	defer c.Close()
+
 	options := client.StartWorkflowOptions{
-		ID:        "transfer-money-workflow",
-		TaskQueue: app.TransferMoneyTaskQueue,
+		ID:        "ss-sign-up-workflow",
+		TaskQueue: app.SignUpTaskQueue,
 	}
-	transferDetails := app.TransferDetails{
-		Amount:      54.99,
-		FromAccount: "001-001",
-		ToAccount:   "002-002",
+
+	signUpDetails := app.SignUpDetails{
+		EmailAddress: "",
+		PhoneNumber: "",
 		ReferenceID: uuid.New().String(),
 	}
-	we, err := c.ExecuteWorkflow(context.Background(), options, app.TransferMoney, transferDetails)
+
+	we, err := c.ExecuteWorkflow(context.Background(), options, app.SignUpCustomer, signUpDetails)
+
 	if err != nil {
-		log.Fatalln("error starting TransferMoney workflow", err)
+		log.Fatalln("error starting SignUpCustomer workflow", err)
 	}
-	printResults(transferDetails, we.GetID(), we.GetRunID())
+
+	printResults(signUpDetails, we.GetID(), we.GetRunID())
 }
 // @@@SNIPEND
-
-func printResults(transferDetails app.TransferDetails, workflowID, runID string) {
-	log.Printf(
-		"\nTransfer of $%f from account %s to account %s is processing. ReferenceID: %s\n",
-		transferDetails.Amount,
-		transferDetails.FromAccount,
-		transferDetails.ToAccount,
-		transferDetails.ReferenceID,
-	)
-	log.Printf(
-		"\nWorkflowID: %s RunID: %s\n",
-		workflowID,
-		runID,
-	)
-}
